@@ -3,6 +3,24 @@ from tqdm import tqdm
 import torch
 
 class Trainer(BaseTrainer):
+    """
+    
+        # Function:
+        
+            __init__:
+
+                Here we initialize train_loader and test_loader
+
+            train_step:
+
+                This function is to perform back propogation over train_step
+
+            test_step:
+
+                This function is used to evaluate the test dataset
+
+        
+    """
     def __init__(self, model, optimizer, device, train_loader, test_loader,epochs,criteria):
         super().__init__(model, optimizer, device, epochs)
         self.train_loader = train_loader
@@ -10,7 +28,7 @@ class Trainer(BaseTrainer):
         self.criteria = criteria
         self.optimizer = optimizer
 
-    def _train_epoch(self,epoch):
+    def train_step(self):
         loss_data = []
         accuracy_data = []
         self.model.train()
@@ -33,7 +51,7 @@ class Trainer(BaseTrainer):
             loss_data.append(loss.data.cpu().numpy().item())
         return loss_data,accuracy_data
 
-    def _test_epoch(self,epoch):
+    def test_step(self):
         loss_data = []
         accuracy_data = []
         self.model.eval()
