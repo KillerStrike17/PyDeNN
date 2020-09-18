@@ -29,7 +29,7 @@ class DatasetMnist:
     def __str__(self):
         return "Loading MNIST Dataset"
 
-    def __init__(self, data_path:str, *, batch_size = 32:int , shuffle = True:bool,transformations, sampler=None, batch_sampler=None, num_workers=0, collate_fn=None, pin_memory=False, drop_last=False, timeout=0, worker_init_fn=None, multiprocessing_context=None, generator=None):
+    def __init__(self, data_path:str, *, batch_size = 32, shuffle = True,transformations, sampler=None, batch_sampler=None, num_workers=0, collate_fn=None, pin_memory=False, drop_last=False, timeout=0, worker_init_fn=None, multiprocessing_context=None, generator=None):
         """
             This function initializes the dataset based on the values provided as parameters
 

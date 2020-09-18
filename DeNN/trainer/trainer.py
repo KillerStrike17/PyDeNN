@@ -22,7 +22,7 @@ class Trainer(BaseTrainer):
         
     """
     def __init__(self, model, optimizer, device, train_loader, test_loader,epochs,criteria):
-        super().__init__(model, optimizer, device, epochs)
+        super().__init__(model, device, epochs)
         self.train_loader = train_loader
         self.test_loader = test_loader
         self.criteria = criteria
