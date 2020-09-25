@@ -1,5 +1,6 @@
 from abc import ABC,abstractmethod
 import torchvision.transforms as T
+import albumentations as A
 
 class BaseDataAugmentation(ABC):
     """
@@ -134,3 +135,44 @@ class DataAugmentationCifar10(BaseDataAugmentation):
             Testing Augmentation applied on to the Test dataset
         """
         return T.Compose([T.ToTensor(),T.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
+    
+class DataAugmentationCifar10_album(BaseDataAugmentation):
+    """
+    This class is for Data Augmentation of CIFAR Dataset
+
+    # Function:
+
+        __repr__:
+
+            This is a representation function, It returns the printable representation of the object.
+
+        __str__:
+
+            It returns useful string representation of the object.
+
+        train_augmentation:
+
+            train transformation over dataset
+
+        test_augmentation:
+            
+            test transformation over dataset
+    """
+    def __repr__(self):
+        return "Data Augmentation Applied over CIFAR 10 Dataset"
+    
+    def __str__(self):
+        return "Data Augmentation Applied over CIFAR 10 Dataset"
+
+    def train_augmentation(self):
+        """
+            Training Augmentation applied on to the train dataset
+        """
+        return A.Compose([A.RandomCrop(32, padding=4),A.RandomHorizontalFlip(),A.ToTensor(),A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
+
+    def test_augmentation(self):
+        """
+            Testing Augmentation applied on to the Test dataset
+        """
+        return A.Compose([A.ToTensor(),A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
+
