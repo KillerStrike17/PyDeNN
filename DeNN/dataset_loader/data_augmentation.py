@@ -1,6 +1,7 @@
 from abc import ABC,abstractmethod
 import torchvision.transforms as T
 import albumentations as A
+import numpy as np
 
 class BaseDataAugmentation(ABC):
     """
@@ -54,6 +55,15 @@ class BaseDataAugmentation(ABC):
             This function takes in train as a parameter and decides whether the generated data is of training set or test set.
         """
         return self.train_augmentation() if train else self.test_augmentation()
+    
+class AlbumentationTransforms:
+    def __init__(self, transforms):
+        self.transforms = transforms
+
+    def __call__(self, img):
+        img = np.array(img)
+
+        return self.transforms(image=img)['image']
 
 class DataAugmentationMnist(BaseDataAugmentation):
     """
@@ -168,11 +178,11 @@ class DataAugmentationCifar10_album(BaseDataAugmentation):
         """
             Training Augmentation applied on to the train dataset
         """
-        return A.Compose([A.RandomCrop(32, padding=4),A.RandomHorizontalFlip(),A.ToTensor(),A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
+        return AlbumentationTransforms(A.Compose([A.RandomCrop(32, padding=4),A.RandomHorizontalFlip(),A.ToTensor(),A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))]))
 
     def test_augmentation(self):
         """
             Testing Augmentation applied on to the Test dataset
         """
-        return A.Compose([A.ToTensor(),A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
+        return AlbumentationTransforms(A.Compose([A.ToTensor(),A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))]))
 
