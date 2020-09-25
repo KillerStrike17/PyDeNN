@@ -178,7 +178,7 @@ class DataAugmentationCifar10_album(BaseDataAugmentation):
         """
             Training Augmentation applied on to the train dataset
         """
-        return AlbumentationTransforms(A.Compose([A.RandomCrop(32, padding=4),A.RandomHorizontalFlip(),A.ToTensor(),A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))]))
+        return AlbumentationTransforms(A.Compose([A.RandomCrop(32, 32),A.HorizontalFlip(),A.ToTensor(),A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))]))
 
     def test_augmentation(self):
         """
