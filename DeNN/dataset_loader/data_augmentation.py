@@ -1,6 +1,7 @@
 from abc import ABC,abstractmethod
 import torchvision.transforms as T
 import albumentations as A
+import albumentations.pytorch.transforms as AT
 import numpy as np
 
 class BaseDataAugmentation(ABC):
@@ -178,11 +179,11 @@ class DataAugmentationCifar10_album(BaseDataAugmentation):
         """
             Training Augmentation applied on to the train dataset
         """
-        return AlbumentationTransforms(A.Compose([A.RandomCrop(32, 32),A.HorizontalFlip(),A.ToTensor(),A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))]))
+        return AlbumentationTransforms(A.Compose([A.RandomCrop(32, 32),A.HorizontalFlip(),A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),AT.ToTensor()]))
 
     def test_augmentation(self):
         """
             Testing Augmentation applied on to the Test dataset
         """
-        return AlbumentationTransforms(A.Compose([A.ToTensor(),A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))]))
+        return AlbumentationTransforms(A.Compose([A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),AT.ToTensor()]))
 
