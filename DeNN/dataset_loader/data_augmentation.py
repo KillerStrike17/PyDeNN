@@ -179,7 +179,7 @@ class DataAugmentationCifar10_album(BaseDataAugmentation):
         """
             Training Augmentation applied on to the train dataset
         """
-        return AlbumentationTransforms(A.Compose([A.RandomCrop(32, 32),A.HorizontalFlip(),A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),AT.ToTensor()]))
+        AlbumentationTransforms(A.Compose([A.PadIfNeeded(min_height=36, min_width=36),A.RandomCrop(32, 32),A.HorizontalFlip(),A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),A.Cutout(num_holes=4),AT.ToTensor()]))
 
     def test_augmentation(self):
         """
