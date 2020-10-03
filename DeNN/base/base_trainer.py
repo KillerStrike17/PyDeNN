@@ -93,6 +93,7 @@ class BaseTrainer:
         test_loss = []
 
         for _ in range(self.epochs):
+            print("Epoch:",_+1)
             train_results = self.train_step()
             test_results = self.test_step()
             train_accuracy.extend(train_results[0])
