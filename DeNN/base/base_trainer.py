@@ -1,3 +1,4 @@
+import torch
 class BaseTrainer:
     """
         This is the base trainer class,
@@ -36,7 +37,7 @@ class BaseTrainer:
     def __str__(self):
         return "Base Trainer Class"
 
-    def __init__(self, model,device:str,epochs:int):
+    def __init__(self, model,device:str,epochs:int,scheduler = None):
         """
             # Params: 
                 
@@ -49,6 +50,7 @@ class BaseTrainer:
         self.model = model
         self.device = device
         self.epochs = epochs
+        self.scheduler = scheduler
 
     def train_step(self):
         """
@@ -96,10 +98,13 @@ class BaseTrainer:
             print("Epoch:",_+1)
             train_results = self.train_step()
             test_results = self.test_step()
-            train_accuracy.extend(train_results[0])
-            train_loss.extend(train_results[1])
-            test_accuracy.extend(test_results[0])
-            test_loss.extend(test_results[1])
+            if isinstance(self.scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+                val_loss = test_results[2]
+                self.scheduler.step(val_loss)
+            train_accuracy.extend(train_results[1])
+            train_loss.extend(train_results[0])
+            test_accuracy.extend(test_results[1])
+            test_loss.extend(test_results[0])
         
 
         return ((train_accuracy,train_loss),(test_accuracy,test_loss))

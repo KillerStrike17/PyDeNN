@@ -21,12 +21,13 @@ class Trainer(BaseTrainer):
 
         
     """
-    def __init__(self, model, optimizer, device, train_loader, test_loader,epochs,criteria):
+    def __init__(self, model, optimizer, device, train_loader, test_loader,epochs,criteria,scheduler):
         super().__init__(model, device, epochs)
         self.train_loader = train_loader
         self.test_loader = test_loader
         self.criteria = criteria
         self.optimizer = optimizer
+        self.scheduler = scheduler
 
     def train_step(self):
         loss_data = []
@@ -35,6 +36,7 @@ class Trainer(BaseTrainer):
 
         train_loss = 0
         correct = 0
+        processed = 0
         pbar = tqdm(self.train_loader)
 
         for batch_idx, (data, target) in enumerate(pbar):
@@ -47,7 +49,8 @@ class Trainer(BaseTrainer):
             pred = output.argmax(dim=1,keepdim=True)
             correct += pred.eq(target.view_as(pred)).sum().item()
             pbar.set_description(desc= f'loss={loss.item()} batch_id={batch_idx} Accuracy = {correct/len(self.train_loader.dataset)}')
-            accuracy_data.append(100*correct/len(self.train_loader.dataset))
+            processed += len(data)
+            accuracy_data.append(100*correct/processed)
             loss_data.append(loss.data.cpu().numpy().item())
         return loss_data,accuracy_data
 
@@ -72,4 +75,4 @@ class Trainer(BaseTrainer):
             100. * correct / len(self.test_loader.dataset)))
         accuracy_data.append(100*correct/len(self.test_loader.dataset))
         loss_data.append(test_loss)
-        return loss_data,accuracy_data
+        return loss_data,accuracy_data,test_loss
