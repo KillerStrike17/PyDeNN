@@ -187,3 +187,8 @@ class DataAugmentationCifar10_album(BaseDataAugmentation):
         """
         return AlbumentationTransforms(A.Compose([A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),AT.ToTensor()]))
 
+class Dataset_Mean_and_std():
+    
+    def mean_and_std(self,dataset):
+        if dataset == "cifar10":
+            return (0.4914, 0.4822, 0.4465),(0.2023, 0.1994, 0.2010)
