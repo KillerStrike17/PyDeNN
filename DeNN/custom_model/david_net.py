@@ -15,8 +15,8 @@ class Resnet_block(BaseModel):
     
     def forward(self,x):
         out = self.re(self.b1(self.c1(x)))
-        out = self.re2(self.b2(self.c2(out)))
-        out = out + self.residue(out)
+        out = self.b2(self.c2(out))
+        out = self.re2(out + self.residue(x))
         return out
 
 class Conv_block(BaseModel):
@@ -26,7 +26,7 @@ class Conv_block(BaseModel):
         self.mp = nn.MaxPool2d(2,2)
         self.b1 = nn.BatchNorm2d(channels)
         self.re = nn.ReLU()
-        self.resnet = Resnet_block(kernels,channels)
+        self.resnet = Resnet_block(channels,channels)
     
     def forward(self,x):
         out = self.re(self.b1(self.mp(self.c1(x))))
@@ -56,10 +56,10 @@ class David_net(BaseModel):
 
     
     def forward(self,x):
-        out = self.prep_layer(x)
-        out = self.layer1(out)
-        out = self.layer2(out)
-        out = self.layer3(out)
+        out = self.prep(x)
+        out = self.l1(out)
+        out = self.l2(out)
+        out = self.l3(out)
         out = self.mp(out)
         out = self.fc(out)
         out = out.view(out.size(0), -1)
