@@ -187,8 +187,52 @@ class DataAugmentationCifar10_album(BaseDataAugmentation):
         """
         return AlbumentationTransforms(A.Compose([A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),AT.ToTensor()]))
 
+
+class TinyImageNetAlbumentations(AugmentationFactoryBase):
+    """
+    This class is for Data Augmentation of TinyImageNet Dataset
+
+    # Function:
+
+        __repr__:
+
+            This is a representation function, It returns the printable representation of the object.
+
+        __str__:
+
+            It returns useful string representation of the object.
+
+        train_augmentation:
+
+            train transformation over dataset
+
+        test_augmentation:
+            
+            test transformation over dataset
+    """
+    def __repr__(self):
+        return "Data Augmentation Applied over TinyImageNet Dataset"
+    
+    def __str__(self):
+        return "Data Augmentation Applied over TinyImageNet Dataset"
+        
+    def train_augmentation(self):
+        """
+            Training Augmentation applied on to the train dataset
+        """
+        return AlbumentationTransforms(A.Compose([A.RandomCrop(64, 64),A.Rotate((-30.0, 30.0)),A.HorizontalFlip(),A.Normalize(mean=[0.4802, 0.4481, 0.3975],std=[0.2302, 0.2265, 0.2262]),A.Cutout(num_holes=4),AT.ToTensor()]))
+
+    def test_augmentation(self):
+        """
+            Testing Augmentation applied on to the Test dataset
+        """
+        return AlbumentationTransforms(A.Compose([A.Normalize(mean=[0.4802, 0.4481, 0.3975],std=[0.2302, 0.2265, 0.2262]),AT.ToTensor()]))
+
+
 class Dataset_Mean_and_std():
     
     def mean_and_std(self,dataset):
         if dataset == "cifar10":
             return (0.4914, 0.4822, 0.4465),(0.2023, 0.1994, 0.2010)
+        if dataset == "tinyimagenet":
+            return (0.4802, 0.4481, 0.3975),(0.2302, 0.2265, 0.2262)
