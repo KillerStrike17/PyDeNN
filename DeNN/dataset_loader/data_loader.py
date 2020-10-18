@@ -1,7 +1,8 @@
 from torch.utils.data import DataLoader, Dataset
 from torchvision import datasets
 from .util import download_and_extract_archive
-
+import os, glob
+from PIL import Image
 class DatasetMnist:
     """
         This class loads MNIST dataset with applied transformations
@@ -226,7 +227,9 @@ class TINYIMAGENET:
             target = self.target_transform(target)
 
         return img, target
-
+    
+    def __len__(self):
+        return len(self.image_paths)
 
 class DatasetTinyImageNet:
 
