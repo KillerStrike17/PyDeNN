@@ -188,7 +188,7 @@ class DataAugmentationCifar10_album(BaseDataAugmentation):
         return AlbumentationTransforms(A.Compose([A.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),AT.ToTensor()]))
 
 
-class TinyImageNetAlbumentations(AugmentationFactoryBase):
+class TinyImageNetAlbumentations(BaseDataAugmentation):
     """
     This class is for Data Augmentation of TinyImageNet Dataset
 
@@ -215,7 +215,7 @@ class TinyImageNetAlbumentations(AugmentationFactoryBase):
     
     def __str__(self):
         return "Data Augmentation Applied over TinyImageNet Dataset"
-        
+
     def train_augmentation(self):
         """
             Training Augmentation applied on to the train dataset
